@@ -29,6 +29,17 @@ namespace DataAccess
             // Find the user with the given userId
             if (user != null && user.Name == name)
             {
+                if(user.Jobs.Count > 0) 
+                {
+                int maxJobId = user.Jobs.Max(x => x.Id);
+                job.Id = maxJobId + 1;
+                
+                }
+                else
+                {
+                    job.Id = 1;
+                }
+                // Increment the jobId by 1 for the new job
                 // Add the job to the user's jobs list
                 user.Jobs.Add(job);
 

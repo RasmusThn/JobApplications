@@ -18,7 +18,7 @@ namespace JobApplications
         private User _user;
         private Job _job;
         private IFilePathProvider _filePathProvider;
-        private CreateFormService _service;  
+        private JobFormService _service;
 
         public CreateJobForm(User user)
         {
@@ -30,7 +30,7 @@ namespace JobApplications
         public CreateJobForm(User user, IFilePathProvider filePathProvider) : this(user)
         {
             this._filePathProvider = filePathProvider;
-            _service = new CreateFormService(_filePathProvider);
+            _service = new JobFormService(_filePathProvider);
         }
 
         private void button_createJob_Click(object sender, EventArgs e)
@@ -43,7 +43,41 @@ namespace JobApplications
             _job.ApplyDate = dateTimePicker_create.Value;
             _job.ResponseDate = DateTime.Now;
             _job.UserName = _user.Name;
-            _service.CreateJobForUser(_job,_user);
+            _service.CreateJobForUser(_job, _user);
+            this.Close();
+        }
+
+        private void textBox_Job_Type_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_location_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void dateTimePicker_create_ValueChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox_company_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void labelCompany_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void labelJobTitle_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void labelLocation_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void labelDate_Click(object sender, EventArgs e)
+        {
         }
     }
 }

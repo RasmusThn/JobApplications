@@ -28,7 +28,6 @@ namespace DataAccess
         }
         public void InsertUser(User user)
         {
-            
             string userFilePath = CombineFilePath(user.Name);
 
             // Check if a file with the same name already exists
@@ -38,10 +37,7 @@ namespace DataAccess
                 // For example, you can throw an exception, log a message, or handle it in any other way you prefer
                 throw new InvalidOperationException($"A user file with the name '{userFilePath}' already exists.");
             }
-
-            // Create the user-specific file
-            using (File.Create(userFilePath)) { }
-
+          
             // Serialize the User object to JSON
             string json = JsonSerializer.Serialize(user);
 
@@ -52,38 +48,36 @@ namespace DataAccess
         public User GetUserByName(string name)
         {
             string userFilePath = CombineFilePath(name);
-            // Read the JSON from the file
+
+            if (!File.Exists(userFilePath)) 
+            {
+                throw new FileNotFoundException($"User file with the name '{userFilePath}' does not exist.");
+            }
+
             string json = File.ReadAllText(userFilePath);
 
             // Deserialize the JSON to a List<User> object
-            User user = JsonSerializer.Deserialize<User>(json);
+            User? user = JsonSerializer.Deserialize<User>(json);
 
-            
-
-            //if (user.Jobs.Count > 0)
-            //{
-            //    // You can also load related data such as Jobs if needed
-            //    // For example:
-            //    user.Jobs = GetJobsByUserName(user.Name);
-
-            //    return user;
-            //}
-
-            return user; // User not found
+            return user; 
         }
-        public List<Job> GetJobsByUserName(string userName)
+        public void UpdateUser(User updatedUser)
         {
-            string userFilePath = CombineFilePath(userName);
-            // Read the JSON from the file
-            string json = File.ReadAllText(userFilePath);
+            string userFilePath = CombineFilePath(updatedUser.Name);
 
-            // Deserialize the JSON back to a List<Job> object
-            List<Job> jobs = JsonSerializer.Deserialize<List<Job>>(json);
+            // Check if the user-specific file exists
+            if (!File.Exists(userFilePath))
+            {
+                // Handle the case where the user-specific file does not exist
+                // For example, you can throw an exception, log a message, or handle it in any other way you prefer
+                throw new FileNotFoundException($"User file with the name '{userFilePath}' does not exist.");
+            }
 
-            // Filter the jobs based on the UserId
-            List<Job> filteredJobs = jobs.FindAll(job => job.UserName == userName);
+            // Serialize the updated User object to JSON
+            string json = JsonSerializer.Serialize(updatedUser);
 
-            return filteredJobs;
+            // Write the JSON to the user-specific file, overwriting the existing data
+            File.WriteAllText(userFilePath, json);
         }
     }
 }

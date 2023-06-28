@@ -4,12 +4,12 @@ using ServiceContracts.Interfaces;
 
 namespace Services
 {
-    public class CreateFormService
+    public class JobFormService
     {
         private IFilePathProvider _filePathProvider;
         private JobDataAccess _dataAccess;
 
-        public CreateFormService(IFilePathProvider filePathProvider)
+        public JobFormService(IFilePathProvider filePathProvider)
         {
             this._filePathProvider = filePathProvider;
             _dataAccess = new JobDataAccess(_filePathProvider);
@@ -19,5 +19,6 @@ namespace Services
         {
             _dataAccess.CreateJobForUserWithName(job,user.Name);
         }
+
     }
 }

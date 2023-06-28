@@ -50,5 +50,9 @@ namespace Services
 
             return user.Jobs.ToList();
         }
+        public void UpdateUser(User user)
+        {
+            _dataAccess.UpdateUser(user);
+        }
     }
 }
