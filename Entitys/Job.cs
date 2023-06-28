@@ -13,7 +13,7 @@ namespace Entitys
         public string JobType { get; set; }
         public string Location { get; set; }
         public DateTime ApplyDate { get; set; }
-        public DateTime? ResponseDate { get; set; }
+        public DateTime ResponseDate { get; set; }
         public bool IsAccepted { get; set; } = false;
 
         

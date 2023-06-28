@@ -52,6 +52,10 @@ namespace Services
                 throw;
             }
         }
+        public List<Job> GetAllJobs(User user)
+        {
 
+            return user.Jobs.ToList();
+        }
     }
 }

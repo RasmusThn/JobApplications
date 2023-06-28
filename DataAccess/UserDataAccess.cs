@@ -18,38 +18,7 @@ namespace DataAccess
         {
             this.connectionString = connectionStringProvider.GetConnectionString();
         }
-        public void SomeMethod()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                // Open the connection
-                connection.Open();
-
-                // Execute your database operations using SqlCommand, SqlDataAdapter, etc.
-                // For example:
-                string sql = "SELECT * FROM Users";
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            // Read data from the reader
-                            // For example:
-                            int userId = (int)reader["Id"];
-                            string userName = (string)reader["Name"];
-
-                            // Do something with the data
-                            // For example:
-                            Console.WriteLine($"User ID: {userId}, Name: {userName}");
-                        }
-                    }
-                }
-
-                // Close the connection
-                connection.Close();
-            }
-        }
+       
         public void InsertUser(User user)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

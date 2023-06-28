@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            button_search = new Button();
             label_company = new Label();
             textBox_search_company = new TextBox();
             richTextBox1 = new RichTextBox();
@@ -37,17 +37,25 @@
             label_jobType = new Label();
             button_searchAll = new Button();
             button_edit = new Button();
+            listView1 = new ListView();
+            columnID = new ColumnHeader();
+            columnCompany = new ColumnHeader();
+            columnJobType = new ColumnHeader();
+            columnLocation = new ColumnHeader();
+            columnApplyDate = new ColumnHeader();
+            columnResponseDate = new ColumnHeader();
+            columnAccepted = new ColumnHeader();
             SuspendLayout();
             // 
-            // button1
+            // button_search
             // 
-            button1.Location = new Point(226, 134);
-            button1.Name = "button1";
-            button1.Size = new Size(87, 23);
-            button1.TabIndex = 0;
-            button1.Text = "Search";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button_search.Location = new Point(226, 134);
+            button_search.Name = "button_search";
+            button_search.Size = new Size(87, 23);
+            button_search.TabIndex = 0;
+            button_search.Text = "Search";
+            button_search.UseVisualStyleBackColor = true;
+            button_search.Click += buttonSearch_Click;
             // 
             // label_company
             // 
@@ -67,9 +75,9 @@
             // 
             // richTextBox1
             // 
-            richTextBox1.Location = new Point(41, 291);
+            richTextBox1.Location = new Point(374, 28);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(443, 282);
+            richTextBox1.Size = new Size(147, 93);
             richTextBox1.TabIndex = 4;
             richTextBox1.Text = "";
             // 
@@ -81,7 +89,7 @@
             button_create.TabIndex = 5;
             button_create.Text = "Create New";
             button_create.UseVisualStyleBackColor = true;
-            button_create.Click += button2_Click;
+            button_create.Click += buttonCreateJob_Click;
             // 
             // textBox_jobType
             // 
@@ -119,11 +127,60 @@
             button_edit.UseVisualStyleBackColor = true;
             button_edit.Click += button_edit_Click;
             // 
+            // listView1
+            // 
+            listView1.Columns.AddRange(new ColumnHeader[] { columnID, columnCompany, columnJobType, columnLocation, columnApplyDate, columnResponseDate, columnAccepted });
+            listView1.FullRowSelect = true;
+            listView1.Location = new Point(12, 289);
+            listView1.MultiSelect = false;
+            listView1.Name = "listView1";
+            listView1.Size = new Size(606, 284);
+            listView1.TabIndex = 10;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.Details;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            // 
+            // columnID
+            // 
+            columnID.Text = "Id";
+            columnID.Width = 30;
+            // 
+            // columnCompany
+            // 
+            columnCompany.Text = "Company";
+            columnCompany.Width = 100;
+            // 
+            // columnJobType
+            // 
+            columnJobType.Text = "JobType";
+            columnJobType.Width = 100;
+            // 
+            // columnLocation
+            // 
+            columnLocation.Text = "Location";
+            columnLocation.Width = 100;
+            // 
+            // columnApplyDate
+            // 
+            columnApplyDate.Text = "Apply Date";
+            columnApplyDate.Width = 100;
+            // 
+            // columnResponseDate
+            // 
+            columnResponseDate.Text = "Response Date";
+            columnResponseDate.Width = 100;
+            // 
+            // columnAccepted
+            // 
+            columnAccepted.Text = "Accepted";
+            columnAccepted.Width = 70;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(568, 585);
+            ClientSize = new Size(626, 585);
+            Controls.Add(listView1);
             Controls.Add(button_edit);
             Controls.Add(textBox_jobType);
             Controls.Add(label_jobType);
@@ -132,7 +189,7 @@
             Controls.Add(richTextBox1);
             Controls.Add(textBox_search_company);
             Controls.Add(label_company);
-            Controls.Add(button1);
+            Controls.Add(button_search);
             Name = "MainForm";
             Text = "User";
             ResumeLayout(false);
@@ -141,7 +198,7 @@
 
         #endregion
 
-        private Button button1;
+        private Button button_search;
         private Label label_company;
         private TextBox textBox_search_company;
         private RichTextBox richTextBox1;
@@ -150,5 +207,13 @@
         private Label label_jobType;
         private Button button_searchAll;
         private Button button_edit;
+        private ListView listView1;
+        private ColumnHeader columnID;
+        private ColumnHeader columnCompany;
+        private ColumnHeader columnJobType;
+        private ColumnHeader columnLocation;
+        private ColumnHeader columnApplyDate;
+        private ColumnHeader columnResponseDate;
+        private ColumnHeader columnAccepted;
     }
 }
