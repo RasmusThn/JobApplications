@@ -7,95 +7,77 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceContracts.Interfaces;
 using System.Xml.Linq;
+using System.Text.Json;
 
 namespace DataAccess
 {
     public class UserDataAccess
     {
-        private readonly string connectionString;
+        private readonly string filePath;
 
-        public UserDataAccess(IConnectionStringProvider connectionStringProvider)
+        public UserDataAccess(IFilePathProvider filePathProvider)
         {
-            this.connectionString = connectionStringProvider.GetConnectionString();
+            this.filePath = filePathProvider.GetFilePath();
         }
-       
+
         public void InsertUser(User user)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // Create a unique filename for the user
+            string fileName = $"{user.Name}.json";
+            string userFilePath = Path.Combine(filePath, fileName);
+
+            // Check if a file with the same name already exists
+            if (File.Exists(userFilePath))
             {
-                string query = "INSERT INTO Users (Name) VALUES (@Name)";
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@Name", user.Name);
-
-                connection.Open();
-                command.ExecuteNonQuery();
+                // Handle the case where a file with the same name already exists
+                // For example, you can throw an exception, log a message, or handle it in any other way you prefer
+                throw new InvalidOperationException($"A user file with the name '{fileName}' already exists.");
             }
+
+            // Create the user-specific file
+            using (File.Create(userFilePath)) { }
+
+            // Serialize the User object to JSON
+            string json = JsonSerializer.Serialize(user);
+
+            // Write the JSON to the user-specific file
+            File.WriteAllText(userFilePath, json);
         }
 
         public User GetUserByName(string name)
         {
+            // Read the JSON from the file
+            string json = File.ReadAllText(filePath);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // Deserialize the JSON to a List<User> object
+            List<User> users = JsonSerializer.Deserialize<List<User>>(json);
+
+            // Find the user with the matching name
+            User user = users.FirstOrDefault(u => u.Name == name);
+
+            if (user != null)
             {
-                string query = "SELECT * FROM Users WHERE Name = @Name";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Name", name);
+                // You can also load related data such as Jobs if needed
+                // For example:
+                user.Jobs = GetJobsByUserId(user.Id);
 
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        User user = new User();
-                        user.Id = (int)reader["Id"];
-                        user.Name = (string)reader["Name"];
-
-                        // You can also load related data such as Jobs if needed
-                        // For example:
-                        user.Jobs = GetJobsByUserId(user.Id);
-
-                        return user;
-                    }
-                }
+                return user;
             }
 
             return null; // User not found
         }
         public List<Job> GetJobsByUserId(int userId)
         {
-            List<Job> jobs = new List<Job>();
+            // Read the JSON from the file
+            string json = File.ReadAllText(filePath);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "SELECT * FROM Jobs WHERE UserId = @UserId";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@UserId", userId);
+            // Deserialize the JSON back to a List<Job> object
+            List<Job> jobs = JsonSerializer.Deserialize<List<Job>>(json);
 
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
+            // Filter the jobs based on the UserId
+            List<Job> filteredJobs = jobs.FindAll(job => job.UserId == userId);
 
-                while (reader.Read())
-                {
-                    Job job = new Job
-                    {
-                        Id = (int)reader["Id"],
-                        CompanyName = (string)reader["CompanyName"],
-                        JobType = (string)reader["JobType"],
-                        Location = (string)reader["Location"],
-                        ApplyDate = (DateTime)reader["ApplyDate"],
-                        ResponseDate = (DateTime)reader["ResponseDate"],
-                        IsAccepted = (bool)reader["IsAccepted"]
-                    };
-
-                    jobs.Add(job);
-                }
-
-                reader.Close();
-            }
-
-            return jobs;
+            return filteredJobs;
         }
     }
 }

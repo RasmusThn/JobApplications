@@ -5,8 +5,8 @@ namespace JobApplications
 {
     public partial class MainForm : Form
     {
-        private User _user;
-        private IConnectionStringProvider connectionStringProvider;
+        private User? _user;
+        private IFilePathProvider _filePathProvider;
 
         public MainForm(User user)
         {
@@ -18,9 +18,9 @@ namespace JobApplications
             //SetupListViewColumns();
         }
 
-        public MainForm(User user, IConnectionStringProvider connectionStringProvider) : this(user)
+        public MainForm(User user, IFilePathProvider filePathProvider) : this(user)
         {
-            this.connectionStringProvider = connectionStringProvider;
+            this._filePathProvider = filePathProvider;
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -30,7 +30,7 @@ namespace JobApplications
 
         private void buttonCreateJob_Click(object sender, EventArgs e)
         {
-            CreateJobForm createForm = new CreateJobForm(_user, connectionStringProvider);
+            CreateJobForm createForm = new CreateJobForm(_user, _filePathProvider);
             createForm.ShowDialog();
         }
 

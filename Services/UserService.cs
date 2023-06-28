@@ -12,29 +12,22 @@ namespace Services
     public class UserService
     {
 
-        private IConnectionStringProvider _connectionStringProvider;
+        private IFilePathProvider _filePathProvider;
         private UserDataAccess _dataAccess;
         private User _user;
 
-        public UserService(IConnectionStringProvider connectionStringProvider)
+        public UserService(IFilePathProvider filePathProvider)
         {
-            _connectionStringProvider = connectionStringProvider;
-            _dataAccess = new UserDataAccess(_connectionStringProvider);
+            _filePathProvider = filePathProvider;
+            _dataAccess = new UserDataAccess(_filePathProvider);
         }
 
 
-        public bool CreateUser(User user)
+        public void CreateUser(User user)
         {
-            try
-            {
+            
             _dataAccess.InsertUser(user);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+               
         }
         //public bool UpdateUser(User user) { }
         //public bool DeleteUser(User user) { }

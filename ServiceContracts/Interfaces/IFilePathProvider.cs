@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceContracts.Interfaces
 {
-    public interface IConnectionStringProvider
+    public interface IFilePathProvider
     {
-        string GetConnectionString();
+        string GetFilePath();
     }
 }

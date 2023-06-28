@@ -6,13 +6,13 @@ namespace Services
 {
     public class CreateFormService
     {
-        private IConnectionStringProvider _connectionStringProvider;
+        private IFilePathProvider _filePathProvider;
         private JobDataAccess _dataAccess;
 
-        public CreateFormService(IConnectionStringProvider connectionStringProvider)
+        public CreateFormService(IFilePathProvider filePathProvider)
         {
-            this._connectionStringProvider = connectionStringProvider;
-            _dataAccess = new JobDataAccess(_connectionStringProvider);
+            this._filePathProvider = filePathProvider;
+            _dataAccess = new JobDataAccess(_filePathProvider);
         }
 
         public void CreateJobForUser(Job job,User user)

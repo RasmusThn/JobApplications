@@ -17,7 +17,7 @@ namespace JobApplications
     {
         private User _user;
         private Job _job;
-        private IConnectionStringProvider _connectionStringProvider;
+        private IFilePathProvider _filePathProvider;
         private CreateFormService _service;  
 
         public CreateJobForm(User user)
@@ -27,10 +27,10 @@ namespace JobApplications
             this.Text = _user.Name;
         }
 
-        public CreateJobForm(User user, IConnectionStringProvider connectionStringProvider) : this(user)
+        public CreateJobForm(User user, IFilePathProvider filePathProvider) : this(user)
         {
-            this._connectionStringProvider = connectionStringProvider;
-            _service = new CreateFormService(_connectionStringProvider);
+            this._filePathProvider = filePathProvider;
+            _service = new CreateFormService(_filePathProvider);
         }
 
         private void button_createJob_Click(object sender, EventArgs e)

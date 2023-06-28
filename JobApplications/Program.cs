@@ -21,21 +21,27 @@ namespace JobApplications
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+            string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string usersFolderPath = Path.Combine(applicationDirectory, "Users");
 
-            // Retrieve the connection string from appsettings.json
-            var connectionString = configuration.GetConnectionString("MyConnectionString");
+            // Create the directory if it doesn't exist
+            if (!Directory.Exists(usersFolderPath))
+            {
+                Directory.CreateDirectory(usersFolderPath);
+            }
+
 
             // Configure DI container
             var serviceProvider = new ServiceCollection()
-            .AddTransient<IConnectionStringProvider>(provider => new ConnectionStringProvider(connectionString))
-            .AddTransient<UserDataAccess>()
-            .AddTransient<JobDataAccess>()
-            .AddTransient<UserLoginForm>(provider =>
-            {
-                var connectionStringProvider = provider.GetRequiredService<IConnectionStringProvider>();
-                return new UserLoginForm(connectionStringProvider);
-            })
-            .BuildServiceProvider();
+                .AddTransient<IFilePathProvider>(provider => new FilePathProvider(usersFolderPath))
+                .AddTransient<UserDataAccess>()
+                .AddTransient<JobDataAccess>()
+                .AddTransient<UserLoginForm>(provider =>
+                {
+                    var filePathProvider = provider.GetRequiredService<IFilePathProvider>();
+                    return new UserLoginForm(filePathProvider);
+                })
+                .BuildServiceProvider();
 
 
             ApplicationConfiguration.Initialize();

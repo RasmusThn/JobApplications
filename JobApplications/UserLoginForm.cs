@@ -16,41 +16,72 @@ namespace JobApplications
 {
     public partial class UserLoginForm : Form
     {
-        private IConnectionStringProvider _connectionStringProvider;
+        private IFilePathProvider _filePathProvider;
         private MainForm _mainForm;
         private User _user;
         private UserService _userService;
 
-        public UserLoginForm(IConnectionStringProvider connectionStringProvider)
+        public UserLoginForm(IFilePathProvider filePathProvider)
         {
             InitializeComponent();
-            _connectionStringProvider = connectionStringProvider; 
-            
-            _userService = new UserService(connectionStringProvider);
+            _filePathProvider = filePathProvider;
+
+            _userService = new UserService(filePathProvider);
         }
         private void button_login_Click(object sender, EventArgs e)
         {
-           _user = _userService.GetUser(textBox_user.Text);
-            _mainForm = new MainForm(_user, _connectionStringProvider);
+            textBoxError.Enabled = false;
+            try
+            {
+            _user = _userService.GetUser(textBox_user.Text);
+
+            }
+            catch (Exception ex)
+            {
+                textBoxError.Enabled = true;
+                textBoxError.Text = ex.Message;
+            }
+            if (_user != null)
+            {
+
+            _mainForm = new MainForm(_user, _filePathProvider);
             _mainForm.FormClosing += MainForm_FormClosing;
             _mainForm.Show();
 
-
             this.Hide();
+            }
+            else
+            {
+                textBoxError.Enabled = true;
+                textBoxError.Text = "Enter Name";
+            }
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 this.Show();
-                
+
             }
         }
         private void button_create_Click(object sender, EventArgs e)
         {
-            _user.Name = textBox_user.Text;
-            _userService.CreateUser(_user);
-            //_dataAccess.InsertUser(_user);
+            textBoxError.Enabled = false;
+
+            try
+            {
+                _user = new User();
+                _user.Name = textBox_user.Text;
+                _userService.CreateUser(_user);
+            }
+            catch (Exception ex)
+            {
+                textBoxError.Enabled = true;
+               textBoxError.Text = ex.Message;
+
+            }
+
+
         }
     }
 }

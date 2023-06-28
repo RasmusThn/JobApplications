@@ -8,9 +8,9 @@ namespace DataAccess
     {
         private readonly string connectionString;
 
-        public JobDataAccess(IConnectionStringProvider connectionStringProvider)
+        public JobDataAccess(IFilePathProvider connectionStringProvider)
         {
-            this.connectionString = connectionStringProvider.GetConnectionString();
+            this.connectionString = connectionStringProvider.GetFilePath();
         }
 
         public void CreateJobForUserWithId(Job job, int userId)

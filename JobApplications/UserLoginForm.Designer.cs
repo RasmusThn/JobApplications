@@ -31,6 +31,7 @@
             textBox_user = new TextBox();
             button_login = new Button();
             button_create = new Button();
+            textBoxError = new TextBox();
             SuspendLayout();
             // 
             // textBox_user
@@ -61,11 +62,21 @@
             button_create.UseVisualStyleBackColor = true;
             button_create.Click += button_create_Click;
             // 
+            // textBoxError
+            // 
+            textBoxError.Enabled = false;
+            textBoxError.Location = new Point(123, 239);
+            textBoxError.Name = "textBoxError";
+            textBoxError.ReadOnly = true;
+            textBoxError.Size = new Size(120, 23);
+            textBoxError.TabIndex = 3;
+            // 
             // UserLoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(382, 385);
+            Controls.Add(textBoxError);
             Controls.Add(button_create);
             Controls.Add(button_login);
             Controls.Add(textBox_user);
@@ -80,5 +91,6 @@
         private TextBox textBox_user;
         private Button button_login;
         private Button button_create;
+        private TextBox textBoxError;
     }
 }
