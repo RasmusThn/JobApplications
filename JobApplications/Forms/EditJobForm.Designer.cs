@@ -40,6 +40,7 @@
             labelResponse = new Label();
             dateTimePicker_response = new DateTimePicker();
             checkBox_accepted = new CheckBox();
+            buttonDelete = new Button();
             SuspendLayout();
             // 
             // labelDate
@@ -145,11 +146,23 @@
             checkBox_accepted.Text = "Accepted";
             checkBox_accepted.UseVisualStyleBackColor = true;
             // 
+            // buttonDelete
+            // 
+            buttonDelete.BackColor = Color.Red;
+            buttonDelete.Location = new Point(129, 345);
+            buttonDelete.Name = "buttonDelete";
+            buttonDelete.Size = new Size(90, 23);
+            buttonDelete.TabIndex = 21;
+            buttonDelete.Text = "Delete";
+            buttonDelete.UseVisualStyleBackColor = false;
+            buttonDelete.Click += buttonDelete_Click;
+            // 
             // EditJobForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(358, 380);
+            Controls.Add(buttonDelete);
             Controls.Add(checkBox_accepted);
             Controls.Add(labelResponse);
             Controls.Add(dateTimePicker_response);
@@ -182,5 +195,6 @@
         private Label labelResponse;
         private DateTimePicker dateTimePicker_response;
         private CheckBox checkBox_accepted;
+        private Button buttonDelete;
     }
 }

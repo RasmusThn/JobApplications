@@ -24,7 +24,7 @@ namespace JobApplications
             RefreshPage();
         }
 
-       
+
         private void RefreshPage()
         {
             if (_user.Jobs.Count == 0)
@@ -53,7 +53,7 @@ namespace JobApplications
         {
             if (_selectedId != -1)
             {
-                EditJobForm editJobForm = new EditJobForm(_user,_selectedId, _filePathProvider);
+                EditJobForm editJobForm = new EditJobForm(_user, _selectedId, _filePathProvider);
                 editJobForm.ShowDialog();
             }
             RefreshPage();

@@ -56,10 +56,27 @@ namespace JobApplications.Forms
             }
 
             _userService.UpdateUser(_user);
-            
+
 
             // Close the form or perform any necessary UI updates
             this.Close();
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+
+            Job job = _user.Jobs.FirstOrDefault(x => x.Id == _jobId);
+            if (job != null)
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this job?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    _user.Jobs.Remove(job);
+                    _userService.UpdateUser(_user);
+                     this.Close();
+                }
+            }
         }
     }
 }

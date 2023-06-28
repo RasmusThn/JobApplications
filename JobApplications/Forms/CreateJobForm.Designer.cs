@@ -80,7 +80,7 @@
             button_createJob.Name = "button_createJob";
             button_createJob.Size = new Size(90, 23);
             button_createJob.TabIndex = 4;
-            button_createJob.Text = "Create";
+            button_createJob.Text = "Add";
             button_createJob.UseVisualStyleBackColor = true;
             button_createJob.Click += button_createJob_Click;
             // 
