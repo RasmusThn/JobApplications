@@ -17,7 +17,7 @@ namespace Services
 
         public void CreateJobForUser(Job job,User user)
         {
-            _dataAccess.CreateJobForUserWithId(job,user.Id);
+            _dataAccess.CreateJobForUserWithName(job,user.Name);
         }
     }
 }

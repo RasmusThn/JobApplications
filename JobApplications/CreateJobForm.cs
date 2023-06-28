@@ -42,6 +42,7 @@ namespace JobApplications
             _job.JobType = textBox_Job_Type.Text;
             _job.ApplyDate = dateTimePicker_create.Value;
             _job.ResponseDate = DateTime.Now;
+            _job.UserName = _user.Name;
             _service.CreateJobForUser(_job,_user);
         }
     }

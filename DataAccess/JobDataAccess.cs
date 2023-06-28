@@ -1,37 +1,42 @@
 ﻿using Entitys;
 using ServiceContracts.Interfaces;
 using System.Data.SqlClient;
+using System.Text.Json;
 
 namespace DataAccess
 {
     public class JobDataAccess
     {
-        private readonly string connectionString;
+        private readonly string _filePath;
 
-        public JobDataAccess(IFilePathProvider connectionStringProvider)
+        public JobDataAccess(IFilePathProvider filePathProvider)
         {
-            this.connectionString = connectionStringProvider.GetFilePath();
+            this._filePath = filePathProvider.GetFilePath();
         }
 
-        public void CreateJobForUserWithId(Job job, int userId)
+        public void CreateJobForUserWithName(Job job, string name)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // Retrieve the file path
+            string fileName = $"{name}.json";
+            string userFilePath = Path.Combine(_filePath, fileName);
+
+            // Read the JSON from the file
+            string json = File.ReadAllText(userFilePath);
+
+            // Deserialize the JSON back to a User object
+            User user = JsonSerializer.Deserialize<User>(json);
+
+            // Find the user with the given userId
+            if (user != null && user.Name == name)
             {
-                string query = @"INSERT INTO Jobs (CompanyName, JobType, Location, ApplyDate, ResponseDate, IsAccepted, UserId)
-                         VALUES (@CompanyName, @JobType, @Location, @ApplyDate, @ResponseDate, @IsAccepted, @UserId)";
+                // Add the job to the user's jobs list
+                user.Jobs.Add(job);
 
-                SqlCommand command = new SqlCommand(query, connection);
+                // Serialize the User object back to JSON
+                string updatedJson = JsonSerializer.Serialize(user);
 
-                command.Parameters.AddWithValue("@CompanyName", job.CompanyName);
-                command.Parameters.AddWithValue("@JobType", job.JobType);
-                command.Parameters.AddWithValue("@Location", job.Location);
-                command.Parameters.AddWithValue("@ApplyDate", job.ApplyDate);
-                command.Parameters.AddWithValue("@ResponseDate", job.ResponseDate);
-                command.Parameters.AddWithValue("@IsAccepted", job.IsAccepted);
-                command.Parameters.AddWithValue("@UserId", userId);
-
-                connection.Open();
-                command.ExecuteNonQuery();
+                // Write the updated JSON back to the file
+                File.WriteAllText(userFilePath, updatedJson);
             }
         }
     }

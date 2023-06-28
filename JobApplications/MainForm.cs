@@ -1,5 +1,6 @@
 using Entitys;
 using ServiceContracts.Interfaces;
+using Services;
 
 namespace JobApplications
 {
@@ -7,21 +8,19 @@ namespace JobApplications
     {
         private User? _user;
         private IFilePathProvider _filePathProvider;
-
-        public MainForm(User user)
+        private UserService _userService;
+        public MainForm(User user, IFilePathProvider filePathProvider)
         {
             InitializeComponent();
             this._user = user;
             this.Text = _user.Name;
+            this._filePathProvider = filePathProvider;
             richTextBox1.AppendText("Logged in as: " + _user.Name);
             listView1.ColumnClick += listView1_ColumnClick;
-            //SetupListViewColumns();
+            _userService = new UserService(_filePathProvider);
         }
 
-        public MainForm(User user, IFilePathProvider filePathProvider) : this(user)
-        {
-            this._filePathProvider = filePathProvider;
-        }
+       
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
@@ -39,21 +38,11 @@ namespace JobApplications
 
         }
 
-        private void SetupListViewColumns()
-        {
-            listView1.Columns.Add("ID", 100);
-            listView1.Columns.Add("Company Name", 200);
-            listView1.Columns.Add("Job Type", 100);
-            listView1.Columns.Add("Location", 150);
-            listView1.Columns.Add("Apply Date", 120);
-            listView1.Columns.Add("Response Date", 120);
-            listView1.Columns.Add("Accepted", 80);
-        }
-
         private void button_searchAll_Click(object sender, EventArgs e)
         {
             // Clear existing items in the ListView
             listView1.Items.Clear();
+            _user = _userService.GetUser(_user.Name);
 
             foreach (var item in _user.Jobs)
             {
@@ -83,7 +72,6 @@ namespace JobApplications
 
                 // Retrieve the data from the selected item
                 int id = Convert.ToInt32(selectedItem.SubItems[0].Text);
-
             }
         }
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)

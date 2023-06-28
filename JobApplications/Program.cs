@@ -21,7 +21,9 @@ namespace JobApplications
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+            
             string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            //string applicationDirectory = configuration["AppSettings:FilePath"];
             string usersFolderPath = Path.Combine(applicationDirectory, "Users");
 
             // Create the directory if it doesn't exist

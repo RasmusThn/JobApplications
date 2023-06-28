@@ -15,7 +15,7 @@ namespace Entitys
         public DateTime ApplyDate { get; set; }
         public DateTime ResponseDate { get; set; }
         public bool IsAccepted { get; set; } = false;
-        public int UserId { get; set; }
+        public string UserName { get; set; }
 
         
     }

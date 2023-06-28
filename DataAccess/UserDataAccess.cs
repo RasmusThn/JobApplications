@@ -19,19 +19,24 @@ namespace DataAccess
         {
             this.filePath = filePathProvider.GetFilePath();
         }
+        private string CombineFilePath(string name)
+        {
+            string fileName = $"{name}.json";
+            string userFilePath = Path.Combine(filePath, fileName);
 
+            return userFilePath;
+        }
         public void InsertUser(User user)
         {
-            // Create a unique filename for the user
-            string fileName = $"{user.Name}.json";
-            string userFilePath = Path.Combine(filePath, fileName);
+            
+            string userFilePath = CombineFilePath(user.Name);
 
             // Check if a file with the same name already exists
             if (File.Exists(userFilePath))
             {
                 // Handle the case where a file with the same name already exists
                 // For example, you can throw an exception, log a message, or handle it in any other way you prefer
-                throw new InvalidOperationException($"A user file with the name '{fileName}' already exists.");
+                throw new InvalidOperationException($"A user file with the name '{userFilePath}' already exists.");
             }
 
             // Create the user-specific file
@@ -46,36 +51,37 @@ namespace DataAccess
 
         public User GetUserByName(string name)
         {
+            string userFilePath = CombineFilePath(name);
             // Read the JSON from the file
-            string json = File.ReadAllText(filePath);
+            string json = File.ReadAllText(userFilePath);
 
             // Deserialize the JSON to a List<User> object
-            List<User> users = JsonSerializer.Deserialize<List<User>>(json);
+            User user = JsonSerializer.Deserialize<User>(json);
 
-            // Find the user with the matching name
-            User user = users.FirstOrDefault(u => u.Name == name);
+            
 
-            if (user != null)
-            {
-                // You can also load related data such as Jobs if needed
-                // For example:
-                user.Jobs = GetJobsByUserId(user.Id);
+            //if (user.Jobs.Count > 0)
+            //{
+            //    // You can also load related data such as Jobs if needed
+            //    // For example:
+            //    user.Jobs = GetJobsByUserName(user.Name);
 
-                return user;
-            }
+            //    return user;
+            //}
 
-            return null; // User not found
+            return user; // User not found
         }
-        public List<Job> GetJobsByUserId(int userId)
+        public List<Job> GetJobsByUserName(string userName)
         {
+            string userFilePath = CombineFilePath(userName);
             // Read the JSON from the file
-            string json = File.ReadAllText(filePath);
+            string json = File.ReadAllText(userFilePath);
 
             // Deserialize the JSON back to a List<Job> object
             List<Job> jobs = JsonSerializer.Deserialize<List<Job>>(json);
 
             // Filter the jobs based on the UserId
-            List<Job> filteredJobs = jobs.FindAll(job => job.UserId == userId);
+            List<Job> filteredJobs = jobs.FindAll(job => job.UserName == userName);
 
             return filteredJobs;
         }

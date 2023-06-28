@@ -25,7 +25,7 @@ namespace Services
 
         public void CreateUser(User user)
         {
-            
+            user.Jobs = new List<Job>();
             _dataAccess.InsertUser(user);
                
         }

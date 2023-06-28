@@ -30,6 +30,7 @@ namespace JobApplications
         }
         private void button_login_Click(object sender, EventArgs e)
         {
+            _user = new User();
             textBoxError.Enabled = false;
             try
             {
