@@ -140,10 +140,26 @@ namespace JobApplications
         }
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            listView1.ListViewItemSorter = new ColumnComparer(e.Column);
+            ColumnComparer comparer = null;
+            bool isSameColumn = false;
 
+            if (listView1.ListViewItemSorter is ColumnComparer columnComparer)
+            {
+                comparer = columnComparer;
+                isSameColumn = comparer.ColumnIndex == e.Column;
+            }
+
+            // Determine the sort order (toggle between ascending and descending)
+            bool isDescending = comparer != null && isSameColumn && comparer.IsDescending;
+            isDescending = !isDescending;
+
+            // Create a new instance of ColumnComparer with the column index and sort order
+            listView1.ListViewItemSorter = new ColumnComparer(e.Column, isDescending);
+
+            // Perform the sorting
             listView1.Sort();
         }
+
 
 
         private void MainForm_Load(object sender, EventArgs e)
