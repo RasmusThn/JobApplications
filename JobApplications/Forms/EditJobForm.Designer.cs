@@ -103,10 +103,10 @@
             textBox_location.Size = new Size(126, 23);
             textBox_location.TabIndex = 11;
             // 
-            // textBox_Job_Type
+            // textBox_Job_Title
             // 
             textBox_Job_Title.Location = new Point(113, 96);
-            textBox_Job_Title.Name = "textBox_Job_Type";
+            textBox_Job_Title.Name = "textBox_Job_Title";
             textBox_Job_Title.PlaceholderText = "System Engineer";
             textBox_Job_Title.Size = new Size(126, 23);
             textBox_Job_Title.TabIndex = 10;
@@ -124,9 +124,9 @@
             checkBox_accepted.AutoSize = true;
             checkBox_accepted.Location = new Point(129, 263);
             checkBox_accepted.Name = "checkBox_accepted";
-            checkBox_accepted.Size = new Size(76, 19);
+            checkBox_accepted.Size = new Size(74, 19);
             checkBox_accepted.TabIndex = 20;
-            checkBox_accepted.Text = "Accepted";
+            checkBox_accepted.Text = "Interview";
             checkBox_accepted.UseVisualStyleBackColor = true;
             // 
             // buttonDelete
