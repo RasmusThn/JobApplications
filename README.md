@@ -17,4 +17,5 @@ Just build release and go to the release folder and run the .exe file.
 Or download folder from here: https://drive.google.com/file/d/1CYxPdkqgM0qeaL6F1tgjq3sNb-TAwm2H/view?usp=sharing
 
 
- 
+ ![image](https://github.com/RasmusThn/JobApplications/assets/89934634/05316329-29e2-49e6-bea3-4dc7138312d3)
+
