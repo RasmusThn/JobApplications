@@ -54,5 +54,10 @@ namespace Services
         {
             _dataAccess.UpdateUser(user);
         }
+
+        public bool DoesUserExist(string username)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

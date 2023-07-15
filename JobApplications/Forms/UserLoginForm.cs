@@ -30,31 +30,37 @@ namespace JobApplications
         }
         private void button_login_Click(object sender, EventArgs e)
         {
-            _user = new User();
-            textBoxError.Enabled = false;
+            string username = textBox_user.Text;
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                ShowError("Must enter a username");
+                return;
+            }
+
             try
             {
-            _user = _userService.GetUser(textBox_user.Text);
+                _user = _userService.GetUser(username);
 
+                if (_user != null)
+                {
+                    _mainForm = new MainForm(_user, _filePathProvider);
+                    _mainForm.FormClosing += MainForm_FormClosing;
+                    _mainForm.Show();
+                    // Clear the text box after successful login
+                    textBox_user.Text = "";
+                    errorLabel.Visible = false;
+
+                    this.Hide();
+                }
+                else
+                {
+                    ShowError("Invalid username");
+                }
             }
             catch (Exception ex)
             {
-                textBoxError.Enabled = true;
-                textBoxError.Text = ex.Message;
-            }
-            if (_user != null)
-            {
-
-            _mainForm = new MainForm(_user, _filePathProvider);
-            _mainForm.FormClosing += MainForm_FormClosing;
-            _mainForm.Show();
-
-            this.Hide();
-            }
-            else
-            {
-                textBoxError.Enabled = true;
-                textBoxError.Text = "Enter Name";
+                Console.WriteLine(ex.Message);
+                ShowError("No User with that name. \nCreate one?");
             }
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -67,22 +73,48 @@ namespace JobApplications
         }
         private void button_create_Click(object sender, EventArgs e)
         {
-            textBoxError.Enabled = false;
-
+            string username = textBox_user.Text;
             try
             {
+                if (string.IsNullOrWhiteSpace(username))
+                {
+                    ShowError("Must enter a username");
+                    return;
+                }
+
                 _user = new User();
-                _user.Name = textBox_user.Text;
+                _user.Name = username;
                 _userService.CreateUser(_user);
+
+                // Clear the text box after successful user creation
+                textBox_user.Text = "";
+
+                ShowSuccessMessage("User created successfully!");
             }
             catch (Exception ex)
             {
-                textBoxError.Enabled = true;
-               textBoxError.Text = ex.Message;
+                if (ex is InvalidOperationException && ex.Message.StartsWith("A user file with the name"))
+                {
 
+                    ShowError($"Username '{username}' already exists.");
+                }
+                else
+                {
+                    ShowError(ex.Message);
+                }
             }
-
-
+        }
+        private void ShowError(string errorMessage)
+        {
+            errorLabel.Text = errorMessage;
+            errorLabel.ForeColor = Color.Red;
+            errorLabel.Visible = true;
+        }
+        private void ShowSuccessMessage(string message)
+        {
+            errorLabel.Text = message;
+            errorLabel.ForeColor = Color.Green;
+            errorLabel.Visible = true;
         }
     }
 }
