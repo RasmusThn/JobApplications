@@ -19,7 +19,7 @@ namespace JobApplications
             this.Text = _user.Name;
             this._filePathProvider = filePathProvider;
             _userService = new UserService(_filePathProvider);
-            AppendTextToRichBox("Logged in as: " + _user.Name);
+            labelHello.Text = "Hello, " + _user.Name + "!";
             listView1.ColumnClick += listView1_ColumnClick;
             RefreshPage();
         }
@@ -29,7 +29,7 @@ namespace JobApplications
         {
             if (_user.Jobs.Count == 0)
             {
-                AppendTextToRichBox("No jobs added");
+                //TODO: Maybe add a error output
                 listView1.Items.Clear();
             }
             else
@@ -39,7 +39,8 @@ namespace JobApplications
         }
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            AppendTextToRichBox(textBox_search_company.Text);
+            string searchTitle = textBox_jobTitle.Text;
+            string searchCompany = textBox_search_company.Text;
         }
 
         private void buttonCreateJob_Click(object sender, EventArgs e)
@@ -65,18 +66,66 @@ namespace JobApplications
             listView1.Items.Clear();
             _user = _userService.GetUser(_user.Name);
 
+            string searchTitle = textBox_jobTitle.Text;
+            string searchCompany = textBox_search_company.Text;
+            string searchLocation = textBoxLocation.Text;
+
             foreach (var item in _user.Jobs)
             {
+                // Apply search filters
+                if (!string.IsNullOrEmpty(searchTitle))
+                {
+                    if (item.JobTitle.IndexOf(searchTitle, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        continue; // Skip this item if it doesn't match the search title
+                    }
+                }
+                if (!string.IsNullOrEmpty(searchCompany))
+                {
+                    if (item.CompanyName.IndexOf(searchCompany, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        continue; // Skip this item if it doesn't match the search company
+                    }
+                }
+                if (!string.IsNullOrEmpty(searchLocation))
+                {
+                    if (item.Location.IndexOf(searchLocation, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        continue; // Skip this item if it doesn't match the search location
+                    }
+                }
+
                 ListViewItem listViewItem = new ListViewItem(item.Id.ToString());
                 listViewItem.SubItems.Add(item.CompanyName.ToString());
-                listViewItem.SubItems.Add(item.JobType.ToString());
+                listViewItem.SubItems.Add(item.JobTitle.ToString());
                 listViewItem.SubItems.Add(item.Location.ToString());
                 listViewItem.SubItems.Add(item.ApplyDate.Date.ToShortDateString());
-                listViewItem.SubItems.Add(item.ResponseDate.Date.ToShortDateString());
-                listViewItem.SubItems.Add(item.IsAccepted.ToString());
+                listViewItem.SubItems.Add(item.Response.ToString());
+
+                // Add the IsAccepted sub-item
+                ListViewItem.ListViewSubItem isAcceptedSubItem = new ListViewItem.ListViewSubItem(listViewItem, item.Interview.ToString());
+                listViewItem.SubItems.Add(isAcceptedSubItem);
+
+                // Set the text color based on the IsAccepted value
+                if (item.Interview && item.Response)
+                {
+                    listViewItem.ForeColor = Color.Green;
+                }
+                else if (item.Response)
+                {
+                    listViewItem.ForeColor = Color.Red;
+                }
+                else
+                {
+                    listViewItem.ForeColor = Color.Gray;
+                }
 
                 listView1.Items.Add(listViewItem);
             }
+
+            textBox_jobTitle.Text = "";
+            textBox_search_company.Text = "";
+            textBoxLocation.Text = "";
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -95,9 +144,16 @@ namespace JobApplications
 
             listView1.Sort();
         }
-        private void AppendTextToRichBox(string line)
+
+
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            richTextBox1.AppendText(line + Environment.NewLine);
+
+        }
+
+        private void labelLocation_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

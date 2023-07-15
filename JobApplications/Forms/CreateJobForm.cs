@@ -39,9 +39,8 @@ namespace JobApplications
 
             _job.CompanyName = textBox_company.Text;
             _job.Location = textBox_location.Text;
-            _job.JobType = textBox_Job_Type.Text;
+            _job.JobTitle = textBox_Job_Type.Text;
             _job.ApplyDate = dateTimePicker_create.Value;
-            _job.ResponseDate = DateTime.Now;
             _job.UserName = _user.Name;
             _service.CreateJobForUser(_job, _user);
             this.Close();

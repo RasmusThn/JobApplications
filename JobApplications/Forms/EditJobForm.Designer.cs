@@ -35,12 +35,11 @@
             button_update = new Button();
             dateTimePicker_apply = new DateTimePicker();
             textBox_location = new TextBox();
-            textBox_Job_Type = new TextBox();
+            textBox_Job_Title = new TextBox();
             textBox_company = new TextBox();
-            labelResponse = new Label();
-            dateTimePicker_response = new DateTimePicker();
             checkBox_accepted = new CheckBox();
             buttonDelete = new Button();
+            checkBoxResponse = new CheckBox();
             SuspendLayout();
             // 
             // labelDate
@@ -106,11 +105,11 @@
             // 
             // textBox_Job_Type
             // 
-            textBox_Job_Type.Location = new Point(113, 96);
-            textBox_Job_Type.Name = "textBox_Job_Type";
-            textBox_Job_Type.PlaceholderText = "System Engineer";
-            textBox_Job_Type.Size = new Size(126, 23);
-            textBox_Job_Type.TabIndex = 10;
+            textBox_Job_Title.Location = new Point(113, 96);
+            textBox_Job_Title.Name = "textBox_Job_Type";
+            textBox_Job_Title.PlaceholderText = "System Engineer";
+            textBox_Job_Title.Size = new Size(126, 23);
+            textBox_Job_Title.TabIndex = 10;
             // 
             // textBox_company
             // 
@@ -120,26 +119,10 @@
             textBox_company.Size = new Size(126, 23);
             textBox_company.TabIndex = 9;
             // 
-            // labelResponse
-            // 
-            labelResponse.AutoSize = true;
-            labelResponse.Location = new Point(113, 225);
-            labelResponse.Name = "labelResponse";
-            labelResponse.Size = new Size(84, 15);
-            labelResponse.TabIndex = 19;
-            labelResponse.Text = "Response Date";
-            // 
-            // dateTimePicker_response
-            // 
-            dateTimePicker_response.Location = new Point(113, 243);
-            dateTimePicker_response.Name = "dateTimePicker_response";
-            dateTimePicker_response.Size = new Size(126, 23);
-            dateTimePicker_response.TabIndex = 18;
-            // 
             // checkBox_accepted
             // 
             checkBox_accepted.AutoSize = true;
-            checkBox_accepted.Location = new Point(143, 272);
+            checkBox_accepted.Location = new Point(129, 263);
             checkBox_accepted.Name = "checkBox_accepted";
             checkBox_accepted.Size = new Size(76, 19);
             checkBox_accepted.TabIndex = 20;
@@ -157,15 +140,24 @@
             buttonDelete.UseVisualStyleBackColor = false;
             buttonDelete.Click += buttonDelete_Click;
             // 
+            // checkBoxResponse
+            // 
+            checkBoxResponse.AutoSize = true;
+            checkBoxResponse.Location = new Point(129, 238);
+            checkBoxResponse.Name = "checkBoxResponse";
+            checkBoxResponse.Size = new Size(76, 19);
+            checkBoxResponse.TabIndex = 22;
+            checkBoxResponse.Text = "Response";
+            checkBoxResponse.UseVisualStyleBackColor = true;
+            // 
             // EditJobForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(358, 380);
+            Controls.Add(checkBoxResponse);
             Controls.Add(buttonDelete);
             Controls.Add(checkBox_accepted);
-            Controls.Add(labelResponse);
-            Controls.Add(dateTimePicker_response);
             Controls.Add(labelDate);
             Controls.Add(labelLocation);
             Controls.Add(labelJobTitle);
@@ -173,7 +165,7 @@
             Controls.Add(button_update);
             Controls.Add(dateTimePicker_apply);
             Controls.Add(textBox_location);
-            Controls.Add(textBox_Job_Type);
+            Controls.Add(textBox_Job_Title);
             Controls.Add(textBox_company);
             Name = "EditJobForm";
             Text = "EditJobForm";
@@ -190,11 +182,10 @@
         private Button button_update;
         private DateTimePicker dateTimePicker_apply;
         private TextBox textBox_location;
-        private TextBox textBox_Job_Type;
+        private TextBox textBox_Job_Title;
         private TextBox textBox_company;
-        private Label labelResponse;
-        private DateTimePicker dateTimePicker_response;
         private CheckBox checkBox_accepted;
         private Button buttonDelete;
+        private CheckBox checkBoxResponse;
     }
 }

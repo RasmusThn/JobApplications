@@ -33,11 +33,11 @@ namespace JobApplications.Forms
             if (job != null)
             {
                 textBox_company.Text = job.CompanyName;
-                textBox_Job_Type.Text = job.JobType;
+                textBox_Job_Title.Text = job.JobTitle;
                 textBox_location.Text = job.Location;
                 dateTimePicker_apply.Value = job.ApplyDate;
-                dateTimePicker_response.Value = job.ResponseDate;
-                checkBox_accepted.Checked = job.IsAccepted;
+                checkBoxResponse.Checked = job.Response;
+                checkBox_accepted.Checked = job.Interview;
             }
         }
 
@@ -48,11 +48,21 @@ namespace JobApplications.Forms
             {
                 // Update the job object with the new values from UI elements
                 job.CompanyName = textBox_company.Text;
-                job.JobType = textBox_Job_Type.Text;
+                job.JobTitle = textBox_Job_Title.Text;
                 job.Location = textBox_location.Text;
                 job.ApplyDate = dateTimePicker_apply.Value;
-                job.ResponseDate = dateTimePicker_response.Value;
-                job.IsAccepted = checkBox_accepted.Checked;
+                job.Response = checkBoxResponse.Checked;
+                //job.Interview = checkBox_accepted.Checked;
+
+                if (checkBoxResponse.Checked)
+                {
+                    job.Interview = checkBox_accepted.Checked;
+                }
+                else
+                {
+                    job.Interview = false;
+                    checkBox_accepted.Checked = false;
+                }
             }
 
             _userService.UpdateUser(_user);
@@ -74,7 +84,7 @@ namespace JobApplications.Forms
                 {
                     _user.Jobs.Remove(job);
                     _userService.UpdateUser(_user);
-                     this.Close();
+                    this.Close();
                 }
             }
         }

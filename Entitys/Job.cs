@@ -10,11 +10,11 @@ namespace Entitys
     {
         public int Id { get; set; }
         public string CompanyName { get; set; }
-        public string JobType { get; set; }
+        public string JobTitle { get; set; }
         public string Location { get; set; }
         public DateTime ApplyDate { get; set; }
-        public DateTime ResponseDate { get; set; }
-        public bool IsAccepted { get; set; } = false;
+        public bool Response { get; set; } = false;
+        public bool Interview { get; set; } = false;
         public string UserName { get; set; }
 
         
